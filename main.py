@@ -1,16 +1,39 @@
-# This is a sample Python script.
+import json, os
+from bot import Bot
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+class Main:
+    def __init__(self):
+        self.jsonData = dict()
+        if os.path.isfile("settings.json") == True:
+            self.loadJSON()
+        else:
+            print("1 - создать файл настроек")
+            print("0 - загрузить файл настроек")
+            choice = int(input(">> "))
+            if choice == 1:
+                name = input("Введите название файла(если ничего не вводить, то файл будет называться settings.json): ")
+                self.jsonData = self.createJSON(name)
 
+            elif choice == 0:
+                name = input("Введите название файла(с .json): ")
+                self.jsonData = self.loadJSON(name)
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+        self.bot = Bot(albumId=self.jsonData['albumId'],token=self.jsonData['token'],wantCmd=self.jsonData['wantCmd'],receiveCmd=self.jsonData['receiveCmd'])
 
+    def loadJSON(self, name="settings.json"):
+        f = open(name,'rt')
+        result = json.load(f)
+        return result
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+    def createJSON(self, name="settings.json"):
+        albumId = int(input("Введите id альбома(только цифры): "))
+        token = input("Введите токен: ")
+        wantCmd = input("Введите команду которая должна присылать рандомную пикчу: ")
+        receiveCmd = input("Введите ответ бота на команду: ")
+        data = {"albumId":albumId,"token":token,"wantCmd":wantCmd, "receiveCmd":receiveCmd}
+        f = open(name,'wt')
+        json.dump(data,f)
+        return data
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+if __name__ in "__main__":
+    a = Main()
