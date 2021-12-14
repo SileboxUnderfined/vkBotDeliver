@@ -1,4 +1,4 @@
-import vk_api
+import vk_api, math, random
 from vk_api.utils import get_random_id
 from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
@@ -12,14 +12,17 @@ CREDITS = """
 """
 
 class Bot:
-    def __init__(self, albumId, token, wantCmd, receiveCmd):
+    def __init__(self, ownerId, albumId, token, userToken, wantCmd, receiveCmd):
+        self.userToken = userToken
+        self.ownerId = ownerId
         self.albumId = albumId
         self.token = token
         self.wantCmd = wantCmd
         self.receiveCmd = receiveCmd
         self.vk = vk_api.VkApi(token=self.token)
-        self.longpoll = VkLongPoll(self.vk)
+        self.longpoll = VkLongPoll(vk=self.vk, wait=25, group_id=self.ownerId)
         self.session = self.vk.get_api()
+        self.userSession = vk_api.VkApi(token=self.userToken).get_api()
         self.loop()
 
     def loop(self):
@@ -27,7 +30,6 @@ class Bot:
             if event.type == VkEventType.MESSAGE_NEW:
                 if event.to_me:
                     msgText = event.text
-                    print(dir(event))
                     if msgText == "Начать":
                         self.session.messages.send(ts="1",
                                                    random_id=get_random_id(),
@@ -51,7 +53,25 @@ class Bot:
                                                    attachment=attach)
 
     def randomSelector(self):
-        pass
+        """album = self.userSession.photos.getAlbums(owner_id=-self.ownerId,album_ids=self.albumId)
+        photosCount = album['items'][0]['size']
+        count = int(math.modf(photosCount/1000)[1])
+        photos = list()"""
+        r = self.userSession.photos.get(owner_id=-self.ownerId,
+                                        album_id=self.albumId,
+                                        count=1000)
+
+        photos = r['items']
+        """for i in range(count+1):
+            r = self.userSession.photos.get(owner_id=-self.ownerId,
+                                        album_id=self.albumId,
+                                        count=1000)
+
+            photos += r['items']"""
+
+        randomed = random.choice(photos)
+        result = f'photo{randomed["owner_id"]}_{randomed["id"]}'
+        return result
 
     def createKeyboard(self):
         keyboard = VkKeyboard()

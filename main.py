@@ -24,7 +24,7 @@ class Main:
                 else:
                     self.jsonData = self.loadJSON(name)
 
-        self.bot = Bot(albumId=self.jsonData['albumId'],token=self.jsonData['token'],wantCmd=self.jsonData['wantCmd'],receiveCmd=self.jsonData['receiveCmd'])
+        self.bot = Bot(ownerId=self.jsonData['ownerId'],albumId=self.jsonData['albumId'],token=self.jsonData['token'],userToken=self.jsonData['userToken'],wantCmd=self.jsonData['wantCmd'],receiveCmd=self.jsonData['receiveCmd'])
 
     def loadJSON(self, name="settings.json"):
         f = open(name,'rt')
@@ -33,11 +33,13 @@ class Main:
         return result
 
     def createJSON(self, name="settings.json"):
+        ownerId = int(input("Введите id сообщества(только цифры): "))
         albumId = int(input("Введите id альбома(только цифры): "))
         token = input("Введите токен: ")
+        userToken = input("Введите токен пользователя(https://vkhost.github.io/): ")
         wantCmd = input("Введите команду которая должна присылать рандомную пикчу: ")
         receiveCmd = input("Введите ответ бота на команду: ")
-        data = {"albumId":albumId,"token":token,"wantCmd":wantCmd, "receiveCmd":receiveCmd}
+        data = {"ownerId":ownerId,"albumId":albumId,"token":token,"userToken":userToken,"wantCmd":wantCmd, "receiveCmd":receiveCmd}
         f = open(name,'wt')
         json.dump(data,f)
         return data
