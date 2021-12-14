@@ -13,10 +13,10 @@ CREDITS = """
 
 class Bot:
     def __init__(self, albumId, token, wantCmd, receiveCmd):
-        self.albumId = int()
-        self.token = str()
-        self.wantCmd = str()
-        self.receiveCmd = str()
+        self.albumId = albumId
+        self.token = token
+        self.wantCmd = wantCmd
+        self.receiveCmd = receiveCmd
         self.vk = vk_api.VkApi(token=self.token)
         self.longpoll = VkLongPoll(self.vk)
         self.session = self.vk.get_api()
@@ -27,17 +27,18 @@ class Bot:
             if event.type == VkEventType.MESSAGE_NEW:
                 if event.to_me:
                     msgText = event.text
-                    if msgText == "Старт":
+                    print(dir(event))
+                    if msgText == "Начать":
                         self.session.messages.send(ts="1",
                                                    random_id=get_random_id(),
                                                    message="Добро пожаловать! Используйте клавиатуру!",
-                                                   chat_id=event.chat_id,
+                                                   user_id=event.user_id,
                                                    keyboard=self.createKeyboard())
                     if msgText == "О боте":
                         self.session.messages.send(ts="1",
                                                    random_id=get_random_id(),
                                                    message=CREDITS,
-                                                   chat_id=event.chat_id,
+                                                   user_id=event.user_id,
                                                    keyboard=self.createKeyboard())
 
                     if msgText == self.wantCmd:
@@ -45,7 +46,7 @@ class Bot:
                         self.session.messages.send(ts="1",
                                                    random_id=get_random_id(),
                                                    message=self.receiveCmd,
-                                                   chat_id=event.chat_id,
+                                                   user_id=event.user_id,
                                                    keyboard=self.createKeyboard(),
                                                    attachment=attach)
 
@@ -57,4 +58,4 @@ class Bot:
         keyboard.add_button(self.wantCmd, color=VkKeyboardColor.POSITIVE)
         keyboard.add_line()
         keyboard.add_button("""О боте""", color=VkKeyboardColor.SECONDARY)
-        return keyboard
+        return keyboard.get_keyboard()

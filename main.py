@@ -5,24 +5,31 @@ class Main:
     def __init__(self):
         self.jsonData = dict()
         if os.path.isfile("settings.json") == True:
-            self.loadJSON()
+            self.jsonData = self.loadJSON()
         else:
             print("1 - создать файл настроек")
             print("0 - загрузить файл настроек")
             choice = int(input(">> "))
             if choice == 1:
                 name = input("Введите название файла(если ничего не вводить, то файл будет называться settings.json): ")
-                self.jsonData = self.createJSON(name)
+                if name == '':
+                    self.jsonData = self.createJSON()
+                else:
+                    self.jsonData = self.createJSON(name)
 
             elif choice == 0:
                 name = input("Введите название файла(с .json): ")
-                self.jsonData = self.loadJSON(name)
+                if name == '':
+                    self.jsonData = self.loadJSON()
+                else:
+                    self.jsonData = self.loadJSON(name)
 
         self.bot = Bot(albumId=self.jsonData['albumId'],token=self.jsonData['token'],wantCmd=self.jsonData['wantCmd'],receiveCmd=self.jsonData['receiveCmd'])
 
     def loadJSON(self, name="settings.json"):
         f = open(name,'rt')
         result = json.load(f)
+        print(result)
         return result
 
     def createJSON(self, name="settings.json"):
