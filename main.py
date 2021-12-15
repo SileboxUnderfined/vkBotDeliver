@@ -1,21 +1,20 @@
 import json, os
 from bot import Bot
-from boto.s3.connection import S3Connection
 
 class Main:
     def __init__(self):
         Data = dict()
         try:
-            print(S3Connection(os.environ['VK_API_KEY']))
+            Data = {"ownerId":int(os.environ['GROUP_ID']),"albumId":int(os.environ['ALBUM_ID']),"token":os.environ["VK_API_KEY"],"userToken":os.environ['USER_TOKEN'],"wantCmd":os.environ['WANT_CMD'],"receiveCmd":os.environ['RECEIVE_CMD']}
         except:
             Data = self.jsonMethod()
 
-        self.bot = Bot(ownerId=self.jsonData['ownerId'],albumId=self.jsonData['albumId'],token=self.jsonData['token'],userToken=self.jsonData['userToken'],wantCmd=self.jsonData['wantCmd'],receiveCmd=self.jsonData['receiveCmd'])
+        self.bot = Bot(ownerId=Data['ownerId'],albumId=Data['albumId'],token=Data['token'],userToken=Data['userToken'],wantCmd=Data['wantCmd'],receiveCmd=Data['receiveCmd'])
 
     def jsonMethod(self):
-        self.jsonData = dict()
+        result = dict()
         if os.path.isfile("settings.json") == True:
-            self.jsonData = self.loadJSON()
+            result = self.loadJSON()
         else:
             print("1 - создать файл настроек")
             print("0 - загрузить файл настроек")
@@ -23,16 +22,18 @@ class Main:
             if choice == 1:
                 name = input("Введите название файла(если ничего не вводить, то файл будет называться settings.json): ")
                 if name == '':
-                    self.jsonData = self.createJSON()
+                    result = self.createJSON()
                 else:
-                    self.jsonData = self.createJSON(name)
+                    result = self.createJSON(name)
 
             elif choice == 0:
                 name = input("Введите название файла(с .json): ")
                 if name == '':
-                    self.jsonData = self.loadJSON()
+                    result = self.loadJSON()
                 else:
-                    self.jsonData = self.loadJSON(name)
+                    result = self.loadJSON(name)
+
+        return result
 
     def loadJSON(self, name="settings.json"):
         f = open(name,'rt')
