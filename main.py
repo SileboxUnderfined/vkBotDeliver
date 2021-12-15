@@ -19,7 +19,11 @@ userSession.auth()
 bs = BotSession.get_api()
 us = userSession.get_api()
 
-@app.route('/', methods=['POST'])
+@app.route('/')
+def index():
+        return '<h1>hi!</h1>'
+
+@app.route('/myBot', methods=['POST'])
 def bot():
         data = request.get_json(force=True,silent=True)
         if not data or 'type' not in data:
