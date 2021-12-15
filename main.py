@@ -5,11 +5,11 @@ class Main:
     def __init__(self):
         Data = dict()
         try:
-            Data = {"ownerId":int(os.environ['GROUP_ID']),"albumId":int(os.environ['ALBUM_ID']),"token":os.environ["VK_API_KEY"],"userToken":os.environ['USER_TOKEN'],"wantCmd":os.environ['WANT_CMD'],"receiveCmd":os.environ['RECEIVE_CMD']}
+            Data = {"ownerId":int(os.environ['GROUP_ID']),"albumId":int(os.environ['ALBUM_ID']),"token":os.environ["VK_API_KEY"],"userPhone":os.environ['USER_PHONE'],"userPassword":os.environ['USER_PASSWORD'],"wantCmd":os.environ['WANT_CMD'],"receiveCmd":os.environ['RECEIVE_CMD']}
         except:
             Data = self.jsonMethod()
 
-        self.bot = Bot(ownerId=Data['ownerId'],albumId=Data['albumId'],token=Data['token'],userToken=Data['userToken'],wantCmd=Data['wantCmd'],receiveCmd=Data['receiveCmd'])
+        self.bot = Bot(ownerId=Data['ownerId'],albumId=Data['albumId'],token=Data['token'],userPhone=Data['userPhone'],userPassword=Data['userPassword'],wantCmd=Data['wantCmd'],receiveCmd=Data['receiveCmd'])
 
     def jsonMethod(self):
         result = dict()
@@ -45,10 +45,11 @@ class Main:
         ownerId = int(input("Введите id сообщества(только цифры): "))
         albumId = int(input("Введите id альбома(только цифры): "))
         token = input("Введите токен: ")
-        userToken = input("Введите токен пользователя(https://vkhost.github.io/): ")
+        userPhone = input("Введите номер телефона пользователя, который является админом группы: ")
+        userPassword = input("Введите пароль от страницы")
         wantCmd = input("Введите команду которая должна присылать рандомную пикчу: ")
         receiveCmd = input("Введите ответ бота на команду: ")
-        data = {"ownerId":ownerId,"albumId":albumId,"token":token,"userToken":userToken,"wantCmd":wantCmd, "receiveCmd":receiveCmd}
+        data = {"ownerId":ownerId,"albumId":albumId,"token":token,"userPhone":userPhone,"userPassword":userPassword,"wantCmd":wantCmd, "receiveCmd":receiveCmd}
         f = open(name,'wt')
         json.dump(data,f)
         return data

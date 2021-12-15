@@ -5,15 +5,16 @@ from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 
 CREDITS = """
     Бота написал: https://vk.com/vmegrikyan99
-    gitHub: https://github.com/SileboxUnderfined
+    gitHub: https://github.com/SileboxUnderfined/vkBotDeliver/
     Хостится с помощью heroku: https://heroku.com
     Используется библиотека vk_api: https://github.com/python273/vk_api
     Лицензия: https://github.com/SileboxUnderfined/vkBotDeliver/blob/main/LICENSE
 """
 
 class Bot:
-    def __init__(self, ownerId, albumId, token, userToken, wantCmd, receiveCmd):
-        self.userToken = userToken
+    def __init__(self, ownerId, albumId, token, userPhone, userPassword, wantCmd, receiveCmd):
+        self.userPhone = userPhone
+        self.userPassword = userPassword
         self.ownerId = ownerId
         self.albumId = albumId
         self.token = token
@@ -22,7 +23,9 @@ class Bot:
         self.vk = vk_api.VkApi(token=self.token)
         self.longpoll = VkLongPoll(vk=self.vk, wait=25, group_id=self.ownerId)
         self.session = self.vk.get_api()
-        self.userSession = vk_api.VkApi(token=self.userToken).get_api()
+        self.userVkApi = vk_api.VkApi(login=self.userPhone,password=self.userPassword,auth_handler=self.authHandler)
+        self.userVkApi.auth()
+        self.userSession = self.userVkApi.get_api()
         self.loop()
 
     def loop(self):
@@ -79,3 +82,9 @@ class Bot:
         keyboard.add_line()
         keyboard.add_button("""О боте""", color=VkKeyboardColor.SECONDARY)
         return keyboard.get_keyboard()
+
+    def authHandler(self):
+        print("Ниже введите код двухфакторной аутентификации: ")
+        code = input(">>> ")
+        remember_device = True
+        return code, remember_device
