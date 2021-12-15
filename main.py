@@ -38,8 +38,7 @@ def bot():
 if __name__ in "__main__":
         BotSession = vk_api.VkApi(token=os.environ['VK_API_KEY'])
         bs = BotSession.get_api()
-        userSession = vk_api.VkApi(login=os.environ['USER_PHONE'], password=os.environ['USER_PASSWORD'],
-                                   auth_handler=botUtils.authHandler(bs, int(os.environ['USER_ID'])))
+        userSession = vk_api.VkApi(login=os.environ['USER_PHONE'], password=os.environ['USER_PASSWORD'])
         userSession.auth()
         us = userSession.get_api()
         app.run(port=5000)
