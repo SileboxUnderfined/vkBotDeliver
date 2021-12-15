@@ -20,14 +20,17 @@ Data = {"token":str(),
         "secretCode":str()}
 
 app = Flask(__name__)
-bot = vk_api.VkApi(token=Data['token'])
-user = vk_api.VkApi(login=Data['userPhone'],password=Data['userPassword'],auth_handler=authHandler)
-user.auth()
-botSession = bot.get_api()
-userSession = user.get_api()
+def initialize():
+    bot = vk_api.VkApi(token=Data['token'])
+    user = vk_api.VkApi(login=Data['userPhone'],password=Data['userPassword'],auth_handler=authHandler)
+    user.auth()
+    botSession = bot.get_api()
+    userSession = user.get_api()
+    return botSession, userSession
 
 @app.route("/", methods=['POST'])
 def bot():
+    botSession, userSession = initialize()
     data = request.get_json(force=True,silent=True)
     if not data or 'type' not in data:
         return 'not ok'
