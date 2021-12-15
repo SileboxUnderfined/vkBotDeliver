@@ -1,4 +1,4 @@
-import json, os, CallbackBot
+import json, os
 from bot import Bot
 
 class Main:

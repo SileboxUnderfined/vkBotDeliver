@@ -6,7 +6,6 @@ from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 CREDITS = """
     Бота написал: https://vk.com/vmegrikyan99
     gitHub: https://github.com/SileboxUnderfined/vkBotDeliver/
-    Хостится с помощью heroku: https://heroku.com
     Используется библиотека vk_api: https://github.com/python273/vk_api
     Лицензия: https://github.com/SileboxUnderfined/vkBotDeliver/blob/main/LICENSE
 """
