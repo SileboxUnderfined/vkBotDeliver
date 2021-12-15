@@ -1,4 +1,5 @@
 import vk_api, math, random
+from flask import Flask, request
 from vk_api.utils import get_random_id
 from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
@@ -12,7 +13,7 @@ CREDITS = """
 """
 
 class Bot:
-    def __init__(self, ownerId, albumId, token, userPhone, userPassword, wantCmd, receiveCmd):
+    def __init__(self, ownerId, albumId, token, userPhone, userPassword, wantCmd, receiveCmd, callbackServer=0, secretCode=""):
         self.userPhone = userPhone
         self.userPassword = userPassword
         self.ownerId = ownerId
@@ -21,12 +22,37 @@ class Bot:
         self.wantCmd = wantCmd
         self.receiveCmd = receiveCmd
         self.vk = vk_api.VkApi(token=self.token)
-        self.longpoll = VkLongPoll(vk=self.vk, wait=25, group_id=self.ownerId)
+        if callbackServer == 0:
+            self.longpoll = VkLongPoll(vk=self.vk, wait=25, group_id=self.ownerId)
+        else:
+            self.server = Flask(__name__)
+            self.confirmCode = secretCode
         self.session = self.vk.get_api()
         self.userVkApi = vk_api.VkApi(login=self.userPhone,password=self.userPassword,auth_handler=self.authHandler)
         self.userVkApi.auth()
         self.userSession = self.userVkApi.get_api()
-        self.loop()
+        if callbackServer == 0:
+            self.loop()
+        else:
+            self.callbackLoop()
+            self.server.add_url_rule("/",methods=['POST'])
+
+    def callbackLoop(self):
+        data = request.get_json(force=True,silent=True)
+        if not data or 'type' not in data:
+            return 'not ok'
+
+        if data['type'] == 'confirmation':
+            return self.confirmCode
+
+        elif data['type'] == 'message_new':
+            userId = data['object']['from_id']
+            msgText = data['object']['text']
+            self.session.messages.send(ts="1",
+                                       random_id=get_random_id(),
+                                       message="Добро пожаловать! Используйте клавиатуру!",
+                                       user_id=event.user_id,
+                                       keyboard=self.createKeyboard())
 
     def loop(self):
         for event in self.longpoll.listen():
