@@ -41,4 +41,4 @@ if __name__ in "__main__":
         #userSession = vk_api.VkApi(login=os.environ['USER_PHONE'], password=os.environ['USER_PASSWORD'])
         #userSession.auth()
         #us = userSession.get_api()
-        app.run()
+        app.run(port=os.environ['PORT'])
