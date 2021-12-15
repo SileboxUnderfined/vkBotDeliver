@@ -22,6 +22,7 @@ def index():
 @app.route('/myBot', methods=['POST'])
 def bot():
         data = request.get_json(force=True,silent=True)
+        print(data['type'], os.environ['CONFIRMATION_TOKEN'])
         if not data or 'type' not in data:
                 return 'not ok'
 
