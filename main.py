@@ -3,13 +3,8 @@ from bot import Bot
 
 class Main:
     def __init__(self):
-        try:
-            Data = {"ownerId":int(os.environ['GROUP_ID']),"albumId":int(os.environ['ALBUM_ID']),"token":os.environ["VK_API_KEY"],"userPhone":os.environ['USER_PHONE'],"userPassword":os.environ['USER_PASSWORD'],"wantCmd":os.environ['WANT_CMD'],"receiveCmd":os.environ['RECEIVE_CMD'],"secretCode":os.environ['SECRET']}
-            CallbackBot.updateData(Data)
-            CallbackBot.app.run()
-        except:
-            Data = self.jsonMethod()
-            self.bot = Bot(ownerId=Data['ownerId'],albumId=Data['albumId'],token=Data['token'],userPhone=Data['userPhone'],userPassword=Data['userPassword'],wantCmd=Data['wantCmd'],receiveCmd=Data['receiveCmd'])
+        Data = self.jsonMethod()
+        self.bot = Bot(ownerId=Data['ownerId'],albumId=Data['albumId'],token=Data['token'],userPhone=Data['userPhone'],userPassword=Data['userPassword'],wantCmd=Data['wantCmd'],receiveCmd=Data['receiveCmd'])
 
     def jsonMethod(self):
         result = dict()
