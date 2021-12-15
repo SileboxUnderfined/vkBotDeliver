@@ -17,12 +17,15 @@ def bot():
         if not data or 'type' not in data:
                 return 'not ok'
 
-        if data['type'] == 'confirmation':
-                return os.environ['CONFIRMATION_TOKEN']
+        if data['secret'] == os.environ['SECRET']:
+                if data['type'] == 'confirmation':
+                        return os.environ['CONFIRMATION_TOKEN']
 
-        elif data['type'] == 'message_new':
-                from_id = data['object']['message']['from_id']
-                bs.messages.send(message='hi',random_id=get_random_id(),user_id=from_id)
+                elif data['type'] == 'message_new':
+                        from_id = data['object']['message']['from_id']
+                        bs.messages.send(message='hi',random_id=get_random_id(),user_id=from_id)
+                        return 'ok'
+
                 return 'ok'
 
         return 'ok'
