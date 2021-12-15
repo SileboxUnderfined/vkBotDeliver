@@ -16,7 +16,7 @@ CREDITS = """
     return key, rememberDevice"""
 
 def randomSelector(us):
-    r = us.photos.get(owner_id=-int(os.environ['OWNER_ID']),
+    r = us.photos.get(owner_id=-int(os.environ['GROUP_ID']),
                                     album_id=int(os.environ['ALBUM_ID']),
                                     count=1000)
 
