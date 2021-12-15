@@ -1,8 +1,18 @@
 import json, os
 from bot import Bot
+from boto.s3.connection import S3Connection
 
 class Main:
     def __init__(self):
+        Data = dict()
+        try:
+            print(S3Connection(os.environ['VK_API_KEY']))
+        except:
+            Data = self.jsonMethod()
+
+        self.bot = Bot(ownerId=self.jsonData['ownerId'],albumId=self.jsonData['albumId'],token=self.jsonData['token'],userToken=self.jsonData['userToken'],wantCmd=self.jsonData['wantCmd'],receiveCmd=self.jsonData['receiveCmd'])
+
+    def jsonMethod(self):
         self.jsonData = dict()
         if os.path.isfile("settings.json") == True:
             self.jsonData = self.loadJSON()
@@ -23,8 +33,6 @@ class Main:
                     self.jsonData = self.loadJSON()
                 else:
                     self.jsonData = self.loadJSON(name)
-
-        self.bot = Bot(ownerId=self.jsonData['ownerId'],albumId=self.jsonData['albumId'],token=self.jsonData['token'],userToken=self.jsonData['userToken'],wantCmd=self.jsonData['wantCmd'],receiveCmd=self.jsonData['receiveCmd'])
 
     def loadJSON(self, name="settings.json"):
         f = open(name,'rt')
