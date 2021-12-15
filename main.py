@@ -2,18 +2,9 @@ import os, vk_api, botUtils
 from flask import Flask, request
 from vk_api.utils import get_random_id
 
-"""Data = {"album_id":int(os.environ['ALBUM_ID']),
-        "groupId":int(os.environ['GROUP_ID']),
-        "receiveCmd":os.environ['RECEIVE_CMD'],
-        "wandCmd":os.environ['WANT_CMD'],
-        "secretKey":os.environ['SECRET'],
-        "userPhone":os.environ['USER_PHONE'],
-        "userPassword":os.environ['USER_PASSWORD'],
-        "token":os.environ['VK_API_KEY'],
-        "confirm":os.environ['CONFIRMATION_TOKEN']}"""
+
 
 app = Flask(__name__)
-
 
 @app.route('/')
 def index():
@@ -30,7 +21,7 @@ def bot():
                 return os.environ['CONFIRMATION_TOKEN']
 
         elif data['type'] == 'message_new':
-                from_id = data['object']['from_id']
+                from_id = data['object']['message']['from_id']
                 bs.messages.send(message='hi',random_id=get_random_id(),user_id=from_id)
                 return 'ok'
 
