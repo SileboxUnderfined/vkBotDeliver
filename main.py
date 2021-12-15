@@ -23,6 +23,12 @@ def bot():
                         message = data['object']['message']
                         if message['text'] == "Начать":
                                 bs.messages.send(message='Используй клавиатуру!',random_id=get_random_id(),user_id=message['from_id'],keyboard=botUtils.getKeyboard())
+
+                        elif message['text'] == 'О боте':
+                                bs.messages.send(message=botUtils.CREDITS,random_id=get_random_id(),user_id=message['from_id'],keyboard=botUtils.getKeyboard())
+
+                        elif message['text'] == os.environ['WANT_CMD']:
+                                pass
                         return 'ok'
 
                 return 'ok'
