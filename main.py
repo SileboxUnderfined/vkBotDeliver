@@ -26,7 +26,7 @@ def bot():
                 return 'not ok'
 
         if data['type'] == 'confirmation':
-                return os.environ['confirm']
+                return os.environ['CONFIRMATION_TOKEN']
 
         elif data['type'] == 'message_new':
                 from_id = data['object']['from_id']
