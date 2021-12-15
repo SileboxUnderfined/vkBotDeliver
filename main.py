@@ -2,8 +2,8 @@ import os, vk_api, botUtils
 from flask import Flask, request
 from vk_api.utils import get_random_id
 
-Data = {"album_id":os.environ['ALBUM_ID'],
-        "groupId":os.environ['GROUP_ID'],
+Data = {"album_id":int(os.environ['ALBUM_ID']),
+        "groupId":int(os.environ['GROUP_ID']),
         "receiveCmd":os.environ['RECEIVE_CMD'],
         "wandCmd":os.environ['WANT_CMD'],
         "secretKey":os.environ['SECRET'],
@@ -34,3 +34,6 @@ def bot():
                 return 'ok'
 
         return 'ok'
+
+if __name__ in "__main__":
+        app.run(port=5000)
