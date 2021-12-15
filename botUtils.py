@@ -1,4 +1,4 @@
-import os
+import os, random
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 
 CREDITS = """
@@ -14,6 +14,16 @@ CREDITS = """
     key = input(">>> ")
     rememberDevice = True
     return key, rememberDevice"""
+
+def randomSelector(us):
+    r = us.photos.get(owner_id=-int(os.environ['OWNER_ID']),
+                                    album_id=int(os.environ['ALBUM_ID']),
+                                    count=1000)
+
+    photos = r['items']
+    randomed = random.choice(photos)
+    result = f'photo{randomed["owner_id"]}_{randomed["id"]}'
+    return result
 
 def getKeyboard():
     keyboard = VkKeyboard()
