@@ -20,8 +20,9 @@ def bot():
                         return os.environ['CONFIRMATION_TOKEN']
 
                 elif data['type'] == 'message_new':
-                        from_id = data['object']['message']['from_id']
-                        bs.messages.send(message='hi',random_id=get_random_id(),user_id=from_id)
+                        message = data['object']['message']
+                        if message['text'] == "Начать":
+                                bs.messages.send(message='Используй клавиатуру!',random_id=get_random_id(),user_id=message['from_id'],keyboard=botUtils.getKeyboard())
                         return 'ok'
 
                 return 'ok'
