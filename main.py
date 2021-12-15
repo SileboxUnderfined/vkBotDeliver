@@ -2,7 +2,7 @@ import os, vk_api, botUtils
 from flask import Flask, request
 from vk_api.utils import get_random_id
 
-Data = {"album_id":int(os.environ['ALBUM_ID']),
+"""Data = {"album_id":int(os.environ['ALBUM_ID']),
         "groupId":int(os.environ['GROUP_ID']),
         "receiveCmd":os.environ['RECEIVE_CMD'],
         "wandCmd":os.environ['WANT_CMD'],
@@ -10,14 +10,10 @@ Data = {"album_id":int(os.environ['ALBUM_ID']),
         "userPhone":os.environ['USER_PHONE'],
         "userPassword":os.environ['USER_PASSWORD'],
         "token":os.environ['VK_API_KEY'],
-        "confirm":os.environ['CONFIRMATION_TOKEN']}
+        "confirm":os.environ['CONFIRMATION_TOKEN']}"""
 
 app = Flask(__name__)
-BotSession = vk_api.VkApi(token=os.environ['VK_API_KEY'])
-userSession = vk_api.VkApi(login=os.environ['USER_PHONE'],password=os.environ['USER_PASSWORD'], auth_handler=botUtils.authHandler)
-userSession.auth()
-bs = BotSession.get_api()
-us = userSession.get_api()
+
 
 @app.route('/')
 def index():
@@ -30,7 +26,7 @@ def bot():
                 return 'not ok'
 
         if data['type'] == 'confirmation':
-                return Data['confirm']
+                return os.environ['confirm']
 
         elif data['type'] == 'message_new':
                 from_id = data['object']['from_id']
@@ -40,4 +36,10 @@ def bot():
         return 'ok'
 
 if __name__ in "__main__":
+        BotSession = vk_api.VkApi(token=os.environ['VK_API_KEY'])
+        bs = BotSession.get_api()
+        userSession = vk_api.VkApi(login=os.environ['USER_PHONE'], password=os.environ['USER_PASSWORD'],
+                                   auth_handler=botUtils.authHandler(bs, int(os.environ['USER_ID'])))
+        userSession.auth()
+        us = userSession.get_api()
         app.run(port=5000)
