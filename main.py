@@ -13,8 +13,8 @@ Data = {"album_id":int(os.environ['ALBUM_ID']),
         "confirm":os.environ['CONFIRMATION_TOKEN']}
 
 app = Flask(__name__)
-BotSession = vk_api.VkApi(token=Data['token'])
-userSession = vk_api.VkApi(login=Data['userPhone'],password=Data['userPassword'], auth_handler=botUtils.authHandler)
+BotSession = vk_api.VkApi(token=os.environ['VK_API_KEY'])
+userSession = vk_api.VkApi(login=os.environ['USER_PHONE'],password=os.environ['USER_PASSWORD'], auth_handler=botUtils.authHandler)
 userSession.auth()
 bs = BotSession.get_api()
 us = userSession.get_api()
