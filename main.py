@@ -3,27 +3,24 @@ from flask import Flask, request
 from vk_api.utils import get_random_id
 
 app = Flask(__name__)
-photos = botUtils.loadPhotos()
 
 @app.route('/', methods=['POST','GET'])
 def index():
         if request.method == 'POST':
                 if request.form.get('photosReload') == "Перезагрузить Фотографии":
-                        global photos
-                        photos = botUtils.loadPhotos()
+                        botUtils.photos = botUtils.loadPhotos()
                         print("reloaded photos")
 
                         return f"""
-        <h1 color=green>Фотографии успешно обновлены!</h1>
-        <h1>фотографий сейчас: {len(photos)}</h1>
+        <h1 style="color: green">Фотографии успешно обновлены!</h1>
+        <h2>фотографий сейчас: {len(botUtils.photos)}</h2>
         <form action="" method="POST">
           <input type="submit" value="Перезагрузить Фотографии" name="photosReload">
         </form>
+        """
 
-        return f"""
-
-        return """    
-        <h1>фотографий сейчас: {len(photos)}</h1>
+        return f"""    
+        <h1>фотографий сейчас: {len(botUtils.photos)}</h1>
         <form action="" method="POST">
           <input type="submit" value="Перезагрузить Фотографии" name="photosReload">
         </form>
@@ -53,8 +50,7 @@ def bot():
                                         bs.messages.send(message=botUtils.CREDITS,random_id=get_random_id(),user_id=message['from_id'],keyboard=botUtils.getKeyboard())
 
                                 elif message['text'] == os.environ['WANT_CMD']:
-                                        global photos
-                                        attach = botUtils.randomSelector(photos)
+                                        attach = botUtils.randomSelector(botUtils.photos)
                                         bs.messages.send(message=os.environ['RECEIVE_CMD'],random_id=get_random_id(),user_id=message['from_id'],keyboard=botUtils.getKeyboard(),attachment=attach)
 
                                 return 'ok'

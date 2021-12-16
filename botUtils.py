@@ -20,6 +20,8 @@ def loadPhotos():
     photos = unjsoned["record"]["photos"]
     return photos
 
+photos = list()
+
 def randomSelector(photos):
     result = random.choice(photos)
     return result
