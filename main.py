@@ -64,7 +64,7 @@ def captchaHanlderPage(captcha):
                 return key
 
         elif request.method == 'GET':
-                return render_template('captchaHandler.html',captchaImg=captcha.get_url())
+                app.app_context(render_template('captchaHandler.html',captchaImg=captcha.get_url())).push()
 
 if __name__ in "__main__":
         data = initializer()
