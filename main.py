@@ -44,7 +44,7 @@ def bot():
 def initializer():
         BotSession = vk_api.VkApi(token=os.environ['VK_API_KEY'])
         bs = BotSession.get_api()
-        userSession = vk_api.VkApi(login=os.environ['USER_PHONE'], password=os.environ['USER_PASSWORD'],captcha_handler=botUtils.captchaHandler)
+        userSession = vk_api.VkApi(login=os.environ['USER_PHONE'], password=os.environ['USER_PASSWORD'],captcha_handler=botUtils.captchaHandler(bs))
         try:
                 userSession.auth()
         except vk_api.AuthError as error:
