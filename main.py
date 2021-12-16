@@ -13,7 +13,8 @@ def index():
                         photos = botUtils.loadPhotos()
                         print("reloaded photos")
 
-        return """
+        return f"""
+        <h1>фотографий сейчас: {len(photos)}</h1>
         <form action="" method="POST">
           <input type="button" value="Перезагрузить Фотографии" name="photosReload">
         </form>
