@@ -55,11 +55,7 @@ def captchaHandler(captcha):
 if __name__ in "__main__":
         BotSession = vk_api.VkApi(token=os.environ['VK_API_KEY'])
         bs = BotSession.get_api()
-        userSession = vk_api.VkApi(login=os.environ['USER_PHONE'], password=os.environ['USER_PASSWORD'],captcha_handler=captchaHandler)
-        try:
-                userSession.auth()
-        except vk_api.AuthError as error:
-                print(error)
+        userSession = vk_api.VkApi(token=os.environ['SERVICE_KEY'])
 
         us = userSession.get_api()
         users = bs.groups.getMembers(group_id=int(os.environ['GROUP_ID']))
