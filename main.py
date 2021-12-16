@@ -45,7 +45,7 @@ def bot():
 def initializer():
         BotSession = vk_api.VkApi(token=os.environ['VK_API_KEY'])
         bs = BotSession.get_api()
-        userSession = vk_api.VkApi(login=os.environ['USER_PHONE'], password=os.environ['USER_PASSWORD'])
+        userSession = vk_api.VkApi(login=os.environ['USER_PHONE'], password=os.environ['USER_PASSWORD'],captcha_handler=captchaHanlderPage)
         try:
                 userSession.auth()
         except vk_api.AuthError as error:
@@ -59,17 +59,12 @@ def initializer():
 
 @app.route('/captcha_handler', methods=['GET','POST'])
 def captchaHanlderPage(captcha):
-        render_template('captchaHandler.html', captchaImg=captcha.get_url())
         if request.method == 'POST':
                 key = request.form.get('captchaKey')
                 return key
 
         elif request.method == 'GET':
-                return render_template()
-
-def captchaHanlder(captcha):
-    result = captchaHanlderPage(captcha)
-    return captcha.try_again(result)
+                return render_template('captchaHandler.html',captchaImg=captcha.get_url())
 
 if __name__ in "__main__":
         data = initializer()
