@@ -11,6 +11,7 @@ def index():
                 if request.form.get('photosReload') == "Перезагрузить Фотографии":
                         global photos
                         photos = botUtils.loadPhotos()
+                        print("reloaded photos")
 
         return """
         <form action="" method="POST">
