@@ -11,6 +11,7 @@ def index():
 
 @app.route('/myBot', methods=['POST'])
 def bot():
+        users = bs.groups.getMembers(group_id=int(os.environ['GROUP_ID']))
         data = request.get_json(force=True,silent=True)
         if not data or 'type' not in data:
                 return 'not ok'
@@ -63,4 +64,3 @@ if __name__ in "__main__":
                 print(error)
 
         us = userSession.get_api()
-        users = bs.groups.getMembers(group_id=int(os.environ['GROUP_ID']))
