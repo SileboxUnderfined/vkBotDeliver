@@ -56,13 +56,14 @@ def initializer():
         users = bs.groups.getMembers(group_id=int(os.environ['GROUP_ID']))
         return [bs,us,users]
 
-"""def captchaHanlder(captcha):
-    userId = int(os.environ['USER_ID'])
-    bs.message.send(message="Введите капчу:{}".format(captcha),user_id=userId,random_id=vk_api.utils.get_random_id())
-    longpoll = VkLongPoll(bs)
-    for event in longpoll.listen():
-        if event.type == VkEventType.MESSAGE_NEW:
-            return captcha.try_again(event.text)"""
+
+@app.route('/captcha_handler', methods=['GET','POST'])
+def captchaHanlderPage(captcha):
+        app.add_template_global('captchaHandler.html', captchaImg=captcha.get_url())
+
+def captchaHanlder(captcha):
+    result = captchaHanlderPage(captcha)
+    return captcha.try_again(result)
 
 if __name__ in "__main__":
         data = initializer()
