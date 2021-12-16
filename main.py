@@ -34,7 +34,7 @@ def bot():
                                         bs.messages.send(message=botUtils.CREDITS,random_id=get_random_id(),user_id=message['from_id'],keyboard=botUtils.getKeyboard())
 
                                 elif message['text'] == os.environ['WANT_CMD']:
-                                        attach = botUtils.randomSelector(us)
+                                        attach = botUtils.randomSelector()
                                         bs.messages.send(message=os.environ['RECEIVE_CMD'],random_id=get_random_id(),user_id=message['from_id'],keyboard=botUtils.getKeyboard(),attachment=attach)
 
                                 return 'ok'
@@ -56,9 +56,9 @@ def bot():
 if __name__ in "__main__":
         BotSession = vk_api.VkApi(token=os.environ['VK_API_KEY'])
         bs = BotSession.get_api()
-        userSession = vk_api.VkApi(token=os.environ['SERVICE_KEY'], app_id=int(os.environ['APP_ID']), scope=VkUserPermissions.GROUPS, client_secret=os.environ['CLIENT_SECRET'])
+        """userSession = vk_api.VkApi(token=os.environ['SERVICE_KEY'], app_id=int(os.environ['APP_ID']), scope=VkUserPermissions.GROUPS, client_secret=os.environ['CLIENT_SECRET'])
         userSession.server_auth()
         userSession.token = {'access_token':os.environ['SERVICE_KEY'],'expires_in':0}
-        us = userSession.get_api()
+        us = userSession.get_api()"""
         users = bs.groups.getMembers(group_id=int(os.environ['GROUP_ID']))
         app.run(host="0.0.0.0",port=os.environ['PORT'],debug=False)

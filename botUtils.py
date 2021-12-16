@@ -1,4 +1,4 @@
-import os, random, math
+import os, random, math, requests, json
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 
 
@@ -18,24 +18,10 @@ CREDITS = """
 
 
 
-def randomSelector(us):
-    album = us.photos.getAlbums(owner_id=-int(os.environ['GROUP_ID']),album_ids=int(os.environ['ALBUM_ID']))
-    photosCount = album['items'][0]['size']
-    count = int(math.modf(photosCount/1000)[1])
-    offset = int()
-    photos = list()
-    for i in range(count+1):
-        r = us.photos.get(owner_id=-int(os.environ['GROUP_ID']),
-                          album_id=int(os.environ['ALBUM_ID']),
-                          count=1000,
-                          offset=offset)
-
-        photos += r['items']
-        offset += 1000
-
-    print(len(photos))
-    randomed = random.choice(photos)
-    result = f'photo{randomed["owner_id"]}_{randomed["id"]}'
+def randomSelector():
+    response = requests.get(os.environ['PHOTOS_LINK'])
+    photos = json.loads(response)
+    result = random.choice(photos)
     return result
 
 def getKeyboard():
