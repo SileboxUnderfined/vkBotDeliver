@@ -33,7 +33,7 @@ def captchaHandler(captcha):
     return captcha.try_again(key)
 
 def createJson(photos, url, key):
-    jsoned = {"count":len(photos),"photos":json.dumps(photos)}
+    jsoned = {"count":len(photos),"photos":photos}
     url = f'https://api.jsonbin.io/v3/b/{url}'
     print(key)
     print(jsoned)

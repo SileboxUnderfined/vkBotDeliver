@@ -18,6 +18,7 @@ def loadPhotos():
     req = requests.get(url, json=None, headers=headers)
     unjsoned = json.loads(req.text)
     photos = unjsoned["record"]["photos"]
+    print(photos)
     return photos
 
 def randomSelector(photos):
