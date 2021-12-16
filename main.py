@@ -60,6 +60,7 @@ def bot():
                 return 'ok'
 
 if __name__ in "__main__":
+        botUtils.photos = botUtils.loadPhotos()
         BotSession = vk_api.VkApi(token=os.environ['VK_API_KEY'])
         bs = BotSession.get_api()
         users = bs.groups.getMembers(group_id=int(os.environ['GROUP_ID']))
