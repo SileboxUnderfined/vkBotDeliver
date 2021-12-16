@@ -11,7 +11,6 @@ def index():
 
 @app.route('/myBot', methods=['POST'])
 def bot():
-        users = bs.groups.getMembers(group_id=int(os.environ['GROUP_ID']))
         data = request.get_json(force=True,silent=True)
         if not data or 'type' not in data:
                 return 'not ok'
@@ -54,7 +53,6 @@ def captchaHandler(captcha):
                     return captcha.try_again(event.text)
 
 if __name__ in "__main__":
-        app.run(host="0.0.0.0",port=os.environ['PORT'],debug=False)
         BotSession = vk_api.VkApi(token=os.environ['VK_API_KEY'])
         bs = BotSession.get_api()
         userSession = vk_api.VkApi(login=os.environ['USER_PHONE'], password=os.environ['USER_PASSWORD'],captcha_handler=captchaHandler)
@@ -64,3 +62,5 @@ if __name__ in "__main__":
                 print(error)
 
         us = userSession.get_api()
+        users = bs.groups.getMembers(group_id=int(os.environ['GROUP_ID']))
+        app.run(host="0.0.0.0",port=os.environ['PORT'],debug=False)
