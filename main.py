@@ -56,6 +56,8 @@ if __name__ in "__main__":
         BotSession = vk_api.VkApi(token=os.environ['VK_API_KEY'])
         bs = BotSession.get_api()
         userSession = vk_api.VkApi(token=os.environ['SERVICE_KEY'], app_id=int(os.environ['APP_ID']), scope=262144)
+        userSession.server_auth()
+        userSession.token = {'access_token':os.environ['SERVICE_KEY'],'expires_in':0}
         us = userSession.get_api()
         users = bs.groups.getMembers(group_id=int(os.environ['GROUP_ID']))
         app.run(host="0.0.0.0",port=os.environ['PORT'],debug=False)
