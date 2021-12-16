@@ -42,14 +42,6 @@ def bot():
 
                 return 'ok'
 
-def captchaHanlder(captcha):
-    userId = int(os.environ['USER_ID'])
-    bs.message.send(message="Введите капчу:{}".format(captcha),user_id=userId,random_id=vk_api.utils.get_random_id())
-    longpoll = VkLongPoll(bs)
-    for event in longpoll.listen():
-        if event.type == VkEventType.MESSAGE_NEW:
-            return captcha.try_again(event.text)
-
 def initializer():
         BotSession = vk_api.VkApi(token=os.environ['VK_API_KEY'])
         bs = BotSession.get_api()
@@ -63,6 +55,14 @@ def initializer():
         us = userSession.get_api()
         users = bs.groups.getMembers(group_id=int(os.environ['GROUP_ID']))
         return [bs,us,users]
+
+def captchaHanlder(captcha):
+    userId = int(os.environ['USER_ID'])
+    bs.message.send(message="Введите капчу:{}".format(captcha),user_id=userId,random_id=vk_api.utils.get_random_id())
+    longpoll = VkLongPoll(bs)
+    for event in longpoll.listen():
+        if event.type == VkEventType.MESSAGE_NEW:
+            return captcha.try_again(event.text)
 
 if __name__ in "__main__":
         data = initializer()
