@@ -1,4 +1,4 @@
-import os, vk_api, botUtils, atexit
+import os, vk_api, botUtils
 from flask import Flask, request
 from vk_api.utils import get_random_id
 
@@ -18,7 +18,7 @@ def bot():
                 if data['type'] == 'confirmation':
                         return os.environ['CONFIRMATION_TOKEN']
 
-                elif data['type'] == 'message_new':
+                elif data['type'] == 'message_new' and data['object']['message']['from_id'] in users['items']:
                         message = data['object']['message']
                         if message['text'] == "Начать":
                                 bs.messages.send(message='Используй клавиатуру!',random_id=get_random_id(),user_id=message['from_id'],keyboard=botUtils.getKeyboard())
@@ -36,9 +36,6 @@ def bot():
 
         return 'ok'
 
-def finishingProg():
-    bs.messages.send(message="ЗАВЕРШЕНИЕ РАБОТЫ", random_id=get_random_id(),peer_ids=users['items'])
-
 if __name__ in "__main__":
         BotSession = vk_api.VkApi(token=os.environ['VK_API_KEY'])
         bs = BotSession.get_api()
@@ -46,6 +43,4 @@ if __name__ in "__main__":
         userSession.auth()
         us = userSession.get_api()
         users = bs.groups.getMembers(group_id=int(os.environ['GROUP_ID']))
-        bs.messages.send(message="БОТ НАЧИНАЕТ СВОЮ РАБОТУ", random_id=get_random_id(), peer_ids=users['items'])
-        atexit.register(finishingProg)
         app.run(host="0.0.0.0",port=os.environ['PORT'],debug=False)
