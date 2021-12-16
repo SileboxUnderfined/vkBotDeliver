@@ -11,8 +11,12 @@ CREDITS = """
 """
 
 def loadPhotos():
-    response = requests.get(os.environ['PHOTOS_LINK'])
-    photos = json.loads(response.text)
+    url = f'https://api.jsonbin.io/v3/b/{os.environ["JSONBIN_ID"]}/latest'
+    headers = {
+        'X-Master-Key':os.environ['JSONBIN_KEY']
+    }
+    req = requests.get(url, json=None, headers=headers)
+    photos = req.txt["record"]["photos"]
     return photos
 
 def randomSelector(photos):
