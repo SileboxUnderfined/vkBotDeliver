@@ -1,4 +1,4 @@
-import os, random, math, requests, json
+import os, random, requests, json
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 
 
@@ -10,17 +10,12 @@ CREDITS = """
     Лицензия: https://github.com/SileboxUnderfined/vkBotDeliver/blob/main/LICENSE
 """
 
-"""def authHandler(bs, userId):
-    bs.messages.send(user_id=userId,message="Введи код двухфакторки")
-    key = input(">>> ")
-    rememberDevice = True
-    return key, rememberDevice"""
-
-
-
-def randomSelector():
+def loadPhotos():
     response = requests.get(os.environ['PHOTOS_LINK'])
     photos = json.loads(response.text)
+    return photos
+
+def randomSelector(photos):
     result = random.choice(photos)
     return result
 

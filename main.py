@@ -1,8 +1,6 @@
 import os, vk_api, botUtils
-from flask import Flask, request, render_template
+from flask import Flask, request
 from vk_api.utils import get_random_id
-from vk_api import VkUserPermissions
-from vk_api.longpoll import VkLongPoll, VkEventType
 
 app = Flask(__name__)
 
@@ -34,7 +32,7 @@ def bot():
                                         bs.messages.send(message=botUtils.CREDITS,random_id=get_random_id(),user_id=message['from_id'],keyboard=botUtils.getKeyboard())
 
                                 elif message['text'] == os.environ['WANT_CMD']:
-                                        attach = botUtils.randomSelector()
+                                        attach = botUtils.randomSelector(photos)
                                         bs.messages.send(message=os.environ['RECEIVE_CMD'],random_id=get_random_id(),user_id=message['from_id'],keyboard=botUtils.getKeyboard(),attachment=attach)
 
                                 return 'ok'
@@ -43,22 +41,9 @@ def bot():
 
                 return 'ok'
 
-"""def captchaHandler(captcha):
-        botSession = vk_api.VkApi(token=os.environ['VK_API_KEY'])
-        longpoll = VkLongPoll(vk=botSession,group_id=int(os.environ['GROUP_ID']))
-        bots = botSession.get_api()
-        bots.messages.send(message=captcha.get_url(),random_id=get_random_id(),user_id=os.environ['USER_ID'])
-        for event in longpoll.listen():
-            if event.type == VkEventType.MESSAGE_NEW:
-                if event.user_id == os.environ['USER_ID']:
-                    return captcha.try_again(event.text)"""
-
 if __name__ in "__main__":
+        photos = botUtils.loadPhotos()
         BotSession = vk_api.VkApi(token=os.environ['VK_API_KEY'])
         bs = BotSession.get_api()
-        """userSession = vk_api.VkApi(token=os.environ['SERVICE_KEY'], app_id=int(os.environ['APP_ID']), scope=VkUserPermissions.GROUPS, client_secret=os.environ['CLIENT_SECRET'])
-        userSession.server_auth()
-        userSession.token = {'access_token':os.environ['SERVICE_KEY'],'expires_in':0}
-        us = userSession.get_api()"""
         users = bs.groups.getMembers(group_id=int(os.environ['GROUP_ID']))
         app.run(host="0.0.0.0",port=os.environ['PORT'],debug=False)
