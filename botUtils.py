@@ -16,7 +16,7 @@ def loadPhotos():
         'X-Master-Key':os.environ['JSONBIN_KEY']
     }
     req = requests.get(url, json=None, headers=headers)
-    photos = req.txt["record"]["photos"]
+    photos = req.text["record"]["photos"]
     return photos
 
 def randomSelector(photos):
