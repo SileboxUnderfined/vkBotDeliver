@@ -1,6 +1,7 @@
 import os, vk_api, botUtils
 from flask import Flask, request, render_template
 from vk_api.utils import get_random_id
+from vk_api import VkUserPermissions
 from vk_api.longpoll import VkLongPoll, VkEventType
 
 app = Flask(__name__)
@@ -55,7 +56,7 @@ def bot():
 if __name__ in "__main__":
         BotSession = vk_api.VkApi(token=os.environ['VK_API_KEY'])
         bs = BotSession.get_api()
-        userSession = vk_api.VkApi(token=os.environ['SERVICE_KEY'], app_id=int(os.environ['APP_ID']), scope=262144, client_secret=os.environ['CLIENT_SECRET'])
+        userSession = vk_api.VkApi(token=os.environ['SERVICE_KEY'], app_id=int(os.environ['APP_ID']), scope=VkUserPermissions.GROUPS, client_secret=os.environ['CLIENT_SECRET'])
         userSession.server_auth()
         userSession.token = {'access_token':os.environ['SERVICE_KEY'],'expires_in':0}
         us = userSession.get_api()
