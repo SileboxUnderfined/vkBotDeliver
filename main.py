@@ -42,7 +42,7 @@ def bot():
 
                 return 'ok'
 
-def captchaHandler(captcha):
+"""def captchaHandler(captcha):
         botSession = vk_api.VkApi(token=os.environ['VK_API_KEY'])
         longpoll = VkLongPoll(vk=botSession,group_id=int(os.environ['GROUP_ID']))
         bots = botSession.get_api()
@@ -50,7 +50,7 @@ def captchaHandler(captcha):
         for event in longpoll.listen():
             if event.type == VkEventType.MESSAGE_NEW:
                 if event.user_id == os.environ['USER_ID']:
-                    return captcha.try_again(event.text)
+                    return captcha.try_again(event.text)"""
 
 if __name__ in "__main__":
         BotSession = vk_api.VkApi(token=os.environ['VK_API_KEY'])
