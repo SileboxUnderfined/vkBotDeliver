@@ -52,7 +52,8 @@ def captchaHandler(captcha):
                 if event.user_id == os.environ['USER_ID']:
                     return captcha.try_again(event.text)
 
-def initializer():
+if __name__ in "__main__":
+        app.run(host="0.0.0.0",port=os.environ['PORT'],debug=False)
         BotSession = vk_api.VkApi(token=os.environ['VK_API_KEY'])
         bs = BotSession.get_api()
         userSession = vk_api.VkApi(login=os.environ['USER_PHONE'], password=os.environ['USER_PASSWORD'],captcha_handler=captchaHandler)
@@ -60,15 +61,6 @@ def initializer():
                 userSession.auth()
         except vk_api.AuthError as error:
                 print(error)
-                return
 
         us = userSession.get_api()
         users = bs.groups.getMembers(group_id=int(os.environ['GROUP_ID']))
-        return [bs,us,users]
-
-if __name__ in "__main__":
-        app.run(host="0.0.0.0",port=os.environ['PORT'],debug=False)
-        data = initializer()
-        bs = data[0]
-        us = data[1]
-        users = data[2]
