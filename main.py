@@ -1,6 +1,7 @@
 import os, vk_api, botUtils
 from flask import Flask, request
 from vk_api.utils import get_random_id
+from vk_api.longpoll import VkLongPoll, VkEventType
 
 app = Flask(__name__)
 
@@ -41,10 +42,18 @@ def bot():
 
                 return 'ok'
 
+def captchaHanlder(captcha):
+    userId = int(os.environ['USER_ID'])
+    bs.message.send(message="Введите капчу:{}".format(captcha),user_id=userId,random_id=vk_api.utils.get_random_id())
+    longpoll = VkLongPoll(bs)
+    for event in longpoll.listen():
+        if event.type == VkEventType.MESSAGE_NEW:
+            return captcha.try_again(event.text)
+
 def initializer():
         BotSession = vk_api.VkApi(token=os.environ['VK_API_KEY'])
         bs = BotSession.get_api()
-        userSession = vk_api.VkApi(login=os.environ['USER_PHONE'], password=os.environ['USER_PASSWORD'],captcha_handler=botUtils.captchaHanlder(bs=bs))
+        userSession = vk_api.VkApi(login=os.environ['USER_PHONE'], password=os.environ['USER_PASSWORD'],captcha_handler=captchaHanlder)
         try:
                 userSession.auth()
         except vk_api.AuthError as error:

@@ -1,7 +1,6 @@
 import os, random, math
-import vk_api.utils
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
-from vk_api.longpoll import VkLongPoll, VkEventType
+
 
 CREDITS = """
     Бота написал: https://vk.com/vmegrikyan99
@@ -17,13 +16,7 @@ CREDITS = """
     rememberDevice = True
     return key, rememberDevice"""
 
-def captchaHanlder(captcha,bs):
-    userId = int(os.environ['USER_ID'])
-    bs.message.send(message="Введите капчу:{}".format(captcha),user_id=userId,random_id=vk_api.utils.get_random_id())
-    longpoll = VkLongPoll(bs)
-    for event in longpoll.listen():
-        if event.type == VkEventType.MESSAGE_NEW:
-            return captcha.try_again(event.text)
+
 
 def randomSelector(us):
     album = us.photos.getAlbums(owner_id=-int(os.environ['GROUP_ID']),album_ids=int(os.environ['ALBUM_ID']))
