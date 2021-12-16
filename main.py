@@ -42,10 +42,18 @@ def bot():
 
                 return 'ok'
 
+def captchaHandler(captcha):
+        botSession = vk_api.VkApi(token=os.environ['VK_API_KEY'])
+        longpoll = VkLongPoll(botSession)
+        for event in longpoll.listen():
+            if event.type == VkEventType.MESSAGE_NEW:
+                if event.user_id == os.environ['USER_ID']:
+                    return captcha.try_again(event.text)
+                
 def initializer():
         BotSession = vk_api.VkApi(token=os.environ['VK_API_KEY'])
         bs = BotSession.get_api()
-        userSession = vk_api.VkApi(login=os.environ['USER_PHONE'], password=os.environ['USER_PASSWORD'],captcha_handler=captchaHanlderPage)
+        userSession = vk_api.VkApi(login=os.environ['USER_PHONE'], password=os.environ['USER_PASSWORD'],captcha_handler=captchaHandler)
         try:
                 userSession.auth()
         except vk_api.AuthError as error:
@@ -55,16 +63,6 @@ def initializer():
         us = userSession.get_api()
         users = bs.groups.getMembers(group_id=int(os.environ['GROUP_ID']))
         return [bs,us,users]
-
-
-@app.route('/captcha_handler', methods=['GET','POST'])
-def captchaHanlderPage(captcha):
-        if request.method == 'POST':
-                key = request.form.get('captchaKey')
-                return key
-
-        elif request.method == 'GET':
-                app.app_context(render_template('captchaHandler.html',captchaImg=captcha.get_url())).push()
 
 if __name__ in "__main__":
         data = initializer()
