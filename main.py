@@ -44,9 +44,9 @@ def bot():
 
 def captchaHandler(captcha):
         botSession = vk_api.VkApi(token=os.environ['VK_API_KEY'])
+        longpoll = VkLongPoll(vk=botSession,group_id=int(os.environ['OWNER_ID']))
         bots = botSession.get_api()
         bots.messages.send(message=captcha.get_url(),random_id=get_random_id(),user_id=os.environ['USER_ID'])
-        longpoll = VkLongPoll(vk=botSession,group_id=int(os.environ['OWNER_ID']))
         for event in longpoll.listen():
             if event.type == VkEventType.MESSAGE_NEW:
                 if event.user_id == os.environ['USER_ID']:
