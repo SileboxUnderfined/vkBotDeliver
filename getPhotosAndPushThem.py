@@ -43,7 +43,6 @@ def createJson(photos, url, key):
     }
     req = requests.put(url,json=jsoned,headers=headers)
     print("Загрузил фотографии на jsonbin...")
-    print(req.text)
 
 def loadData():
     f = open("settings.json",'rt')
