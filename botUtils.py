@@ -16,7 +16,7 @@ CREDITS = """
     return key, rememberDevice"""
 
 def randomSelector(us):
-    album = us.photos.getAlbums(owner_id=-int(os.environ['GROUP_ID'],album_ids=int(os.environ['ALBUM_ID'])))
+    album = us.photos.getAlbums(owner_id=-int(os.environ['GROUP_ID']),album_ids=int(os.environ['ALBUM_ID']))
     photosCount = album['items'][0]['size']
     count = int(math.modf(photosCount/1000)[1])
     offset = int()
