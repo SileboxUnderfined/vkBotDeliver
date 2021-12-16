@@ -13,7 +13,16 @@ def index():
                         photos = botUtils.loadPhotos()
                         print("reloaded photos")
 
+                        return f"""
+        <h1 color=green>Фотографии успешно обновлены!</h1>
+        <h1>фотографий сейчас: {len(photos)}</h1>
+        <form action="" method="POST">
+          <input type="submit" value="Перезагрузить Фотографии" name="photosReload">
+        </form>
+
         return f"""
+
+        return """    
         <h1>фотографий сейчас: {len(photos)}</h1>
         <form action="" method="POST">
           <input type="submit" value="Перезагрузить Фотографии" name="photosReload">
