@@ -67,8 +67,8 @@ def initializer():
         return [bs,us,users]
 
 if __name__ in "__main__":
+        app.run(host="0.0.0.0",port=os.environ['PORT'],debug=False)
         data = initializer()
         bs = data[0]
         us = data[1]
         users = data[2]
-        app.run(host="0.0.0.0",port=os.environ['PORT'],debug=False)
