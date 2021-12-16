@@ -34,7 +34,7 @@ def bot():
                                         bs.messages.send(message=botUtils.CREDITS,random_id=get_random_id(),user_id=message['from_id'],keyboard=botUtils.getKeyboard())
 
                                 elif message['text'] == os.environ['WANT_CMD']:
-                                        attach = botUtils.randomSelector(bs)
+                                        attach = botUtils.randomSelector(us)
                                         bs.messages.send(message=os.environ['RECEIVE_CMD'],random_id=get_random_id(),user_id=message['from_id'],keyboard=botUtils.getKeyboard(),attachment=attach)
 
                                 return 'ok'
