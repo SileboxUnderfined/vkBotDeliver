@@ -24,7 +24,6 @@ def randomSelector(us):
     count = int(math.modf(photosCount/1000)[1])
     offset = int()
     photos = list()
-    print(len(photos))
     for i in range(count+1):
         r = us.photos.get(owner_id=-int(os.environ['GROUP_ID']),
                           album_id=int(os.environ['ALBUM_ID']),
@@ -34,6 +33,7 @@ def randomSelector(us):
         photos += r['items']
         offset += 1000
 
+    print(len(photos))
     randomed = random.choice(photos)
     result = f'photo{randomed["owner_id"]}_{randomed["id"]}'
     return result
