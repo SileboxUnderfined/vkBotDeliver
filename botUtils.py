@@ -20,7 +20,7 @@ CREDITS = """
 
 def randomSelector():
     response = requests.get(os.environ['PHOTOS_LINK'])
-    photos = json.loads(response)
+    photos = json.loads(response.text)
     result = random.choice(photos)
     return result
 
