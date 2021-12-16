@@ -145,3 +145,4 @@ build/
 dist/
 
 *.spec
+*.exe
