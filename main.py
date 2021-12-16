@@ -1,5 +1,5 @@
 import os, vk_api, botUtils
-from flask import Flask, request
+from flask import Flask, request, render_template
 from vk_api.utils import get_random_id
 from vk_api.longpoll import VkLongPoll, VkEventType
 
@@ -59,7 +59,13 @@ def initializer():
 
 @app.route('/captcha_handler', methods=['GET','POST'])
 def captchaHanlderPage(captcha):
-        app.add_template_global('captchaHandler.html', captchaImg=captcha.get_url())
+        render_template('captchaHandler.html', captchaImg=captcha.get_url())
+        if request.method == 'POST':
+                key = request.form.get('captchaKey')
+                return key
+
+        elif request.method == 'GET':
+                return render_template()
 
 def captchaHanlder(captcha):
     result = captchaHanlderPage(captcha)
