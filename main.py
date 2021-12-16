@@ -3,10 +3,20 @@ from flask import Flask, request
 from vk_api.utils import get_random_id
 
 app = Flask(__name__)
+photos = botUtils.loadPhotos()
 
-@app.route('/')
+@app.route('/', methods=['POST','GET'])
 def index():
-        return '<h1>hi!</h1>'
+        if request.method == 'POST':
+                if request.form.get('photosReload') == "Перезагрузить Фотографии":
+                        global photos
+                        photos = botUtils.loadPhotos()
+
+        return """
+        <form action="" method="POST">
+          <input type="button" value="Перезагрузить Фотографии" name="photosReload">
+        </form>
+        """
 
 @app.route('/myBot', methods=['POST'])
 def bot():
@@ -32,6 +42,7 @@ def bot():
                                         bs.messages.send(message=botUtils.CREDITS,random_id=get_random_id(),user_id=message['from_id'],keyboard=botUtils.getKeyboard())
 
                                 elif message['text'] == os.environ['WANT_CMD']:
+                                        global photos
                                         attach = botUtils.randomSelector(photos)
                                         bs.messages.send(message=os.environ['RECEIVE_CMD'],random_id=get_random_id(),user_id=message['from_id'],keyboard=botUtils.getKeyboard(),attachment=attach)
 
@@ -42,7 +53,6 @@ def bot():
                 return 'ok'
 
 if __name__ in "__main__":
-        photos = botUtils.loadPhotos()
         BotSession = vk_api.VkApi(token=os.environ['VK_API_KEY'])
         bs = BotSession.get_api()
         users = bs.groups.getMembers(group_id=int(os.environ['GROUP_ID']))
