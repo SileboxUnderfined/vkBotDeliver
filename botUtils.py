@@ -22,8 +22,8 @@ def loadPhotos():
 
 photos = list()
 
-def randomSelector(photos):
-    result = random.choice(photos)
+def randomSelector(photoss):
+    result = random.choice(photoss)
     return result
 
 def getKeyboard():
