@@ -16,7 +16,7 @@ def index():
         return f"""
         <h1>фотографий сейчас: {len(photos)}</h1>
         <form action="" method="POST">
-          <input type="button" value="Перезагрузить Фотографии" name="photosReload">
+          <input type="submit" value="Перезагрузить Фотографии" name="photosReload">
         </form>
         """
 
