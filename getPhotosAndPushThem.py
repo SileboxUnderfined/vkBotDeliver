@@ -35,8 +35,6 @@ def captchaHandler(captcha):
 def createJson(photos, url, key):
     jsoned = {"count":len(photos),"photos":photos}
     url = f'https://api.jsonbin.io/v3/b/{url}'
-    print(key)
-    print(jsoned)
     headers = {
         'Content-Type': 'application/json',
         'X-Master-Key': key
